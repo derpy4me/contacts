@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
@@ -5,7 +7,7 @@ const doc = {
     title: "Contacts API",
     description: "An API for Contacts",
   },
-  host: "localhost:3000",
+  host: process.env.API_URL,
 };
 
 const outputFile = "./swagger.json";
