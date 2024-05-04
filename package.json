@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start-dev": "nodemon --exec npm run app --ignore ./swagger.json",
-    "start": "node run app",
+    "start": "npm run app",
     "app": "npm run swagger && node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "swagger": "node ./swagger.js"
