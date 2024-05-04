@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const swaggerAutogen = require("swagger-autogen")();
 
-const environment = process.env.NODE_ENV || "development";
+const environment = process.env.ENVIRONMENT || "development";
 
 let schema = ["http"];
 
