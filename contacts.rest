@@ -1,2 +1,24 @@
 GET localhost:3000/contacts
-GET localhost:3000/contacts/66316ec8092529f6bf49b0ff
+GET localhost:3000/contacts/4
+
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+ "contact_id": 4,
+ "firstName": "Theodoric",
+ "lastName": "Reina",
+ "email": "treina0@gizmodo.com",
+ "favoriteColor": "Pink",
+ "birthday": "1991-02-26"
+}
+
+PUT http://localhost:3000/contacts/4
+Content-Type: application/json
+
+{
+ "favoriteColor": "Blue"
+}
+
+
+DELETE localhost:3000/4
