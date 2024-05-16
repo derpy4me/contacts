@@ -20,11 +20,11 @@ const initDb = (callback) => {
     });
 };
 
-const getDb = () => {
+const getDb = (collection) => {
   if (!_db) {
     throw Error("Db not initialized");
   }
-  return _db;
+  return _db.db().collection(collection);
 };
 
 module.exports = {
