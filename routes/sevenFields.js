@@ -83,7 +83,7 @@ router.put("/:id", sevenFieldDto.sevenFieldUpdateRules(), validate, async (req, 
 router.delete("/:id", [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
     console.log("Delete sevenField received");
     try {
-        await sevenFieldDal.updateSevenFields(req.params.id);
+        await sevenFieldDal.deleteSevenFields(req.params.id);
         res.status(200).send(`sevenField with id: ${req.params.id} deleted`);
     } catch (err) {
         console.error(err);
