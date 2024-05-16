@@ -52,20 +52,18 @@ router.post("/", boringDto.boringValidationRules(), validate, async (req, res) =
 router.put("/:id", boringDto.boringUpdateRules(), validate, async (req, res) => {
     console.log("Update sevenField received");
     console.log(req.body);
-    const contact_id = req.params.id;
-    const updatedContact = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        favoriteColor: req.body.favoriteColor,
-        birthday: req.body.birthday,
+    const boringId = req.params.id
+    const {name, domain} = req.body;
+    const newBoring = {
+        name,
+        domain
     };
     try {
-        const contact = await boringDal.updateBoring(contact_id, updatedContact);
-        if (contact) {
-            res.status(200).send({id: req.params.id, updatedContact});
+        const updatedBoring = await boringDal.updateBoring(boringId, newBoring);
+        if (updatedBoring) {
+            res.status(200).send(updatedBoring);
         } else {
-            res.status(404).send(`Contact with id ${contact_id} not found`);
+            res.status(404).send(`boring with id ${boringId} not found`);
         }
     } catch (err) {
         console.log(err);
