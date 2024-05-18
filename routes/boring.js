@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const boringDal = require("../dal/boring");
 const boringDto = require("../dto/boring");
-const {validate} = require("../utilities/validate.js");
+const {validate} = require("../middleware/validate");
 const {v4} = require("uuid");
 const {param} = require("express-validator");
+const {isAuthenticated} = require("../middleware/authenticate");
 
 
-router.get("/", async (req, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
     try {
         const sevenFields = await boringDal.getAll();
         res.send(sevenFields);
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
+router.get("/:id", isAuthenticated, [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
     try {
         const sevenField = await boringDal.getOne(req.params.id);
         if (sevenField === null) {
@@ -30,7 +31,7 @@ router.get("/:id", [param('id', 'UUID required').isUUID()], validate, async (req
     }
 });
 
-router.post("/", boringDto.boringValidationRules(), validate, async (req, res) => {
+router.post("/", isAuthenticated, boringDto.boringValidationRules(), validate, async (req, res) => {
     console.log("Create boring received");
     console.log(req.body);
     const {name, domain} = req.body;
@@ -49,7 +50,7 @@ router.post("/", boringDto.boringValidationRules(), validate, async (req, res) =
 
 });
 
-router.put("/:id", boringDto.boringUpdateRules(), validate, async (req, res) => {
+router.put("/:id", isAuthenticated, boringDto.boringUpdateRules(), validate, async (req, res) => {
     console.log("Update sevenField received");
     console.log(req.body);
     const boringId = req.params.id
@@ -71,7 +72,7 @@ router.put("/:id", boringDto.boringUpdateRules(), validate, async (req, res) => 
     }
 });
 
-router.delete("/:id", [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
+router.delete("/:id", isAuthenticated, [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
     console.log("Delete sevenField received");
     try {
         await boringDal.deleteBoring(req.params.id);

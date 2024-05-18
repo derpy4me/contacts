@@ -2,11 +2,12 @@ const router = require("express").Router();
 
 const sevenFieldDal = require("../dal/sevenFields");
 const sevenFieldDto = require("../dto/sevenFields");
-const {validate} = require("../utilities/validate.js");
+const {validate} = require("../middleware/validate");
 const {v4} = require("uuid");
 const {param} = require("express-validator");
+const {isAuthenticated} = require('../middleware/authenticate');
 
-router.get("/", async (req, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
     try {
         const sevenFields = await sevenFieldDal.getAll();
         res.send(sevenFields);
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:id", [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
+router.get("/:id", isAuthenticated, [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
     try {
         const sevenField = await sevenFieldDal.getOne(req.params.id);
         if (sevenField === null) {
@@ -30,7 +31,7 @@ router.get("/:id", [param('id', 'UUID required').isUUID()], validate, async (req
     }
 });
 
-router.post('/', sevenFieldDto.sevenFieldValidationRules(), validate, async (req, res) => {
+router.post('/', isAuthenticated, sevenFieldDto.sevenFieldValidationRules(), validate, async (req, res) => {
     console.log("Create sevenFields received");
     console.log(req.body);
     const {species_name, family_name, average_size, habitat, life_span, diet} = req.body;
@@ -54,7 +55,7 @@ router.post('/', sevenFieldDto.sevenFieldValidationRules(), validate, async (req
 
 });
 
-router.put("/:id", sevenFieldDto.sevenFieldUpdateRules(), validate, async (req, res) => {
+router.put("/:id", isAuthenticated, sevenFieldDto.sevenFieldUpdateRules(), validate, async (req, res) => {
     console.log("Update Contact received");
     console.log(req.body);
     const sevenFieldId = req.params.id;
@@ -80,7 +81,7 @@ router.put("/:id", sevenFieldDto.sevenFieldUpdateRules(), validate, async (req, 
     }
 });
 
-router.delete("/:id", [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
+router.delete("/:id", isAuthenticated, [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
     console.log("Delete sevenField received");
     try {
         await sevenFieldDal.deleteSevenFields(req.params.id);
