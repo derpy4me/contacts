@@ -18,7 +18,7 @@ app
         saveUninitialized: true,
     }))
     .use(passport.initialize())
-    .use(passport.session())
+    .use(passport.session({}))
     .use((err, req, res, nxt) => {
         if (err instanceof express.ValidationError) {
             return res.status(400).json({errors: err.array()});

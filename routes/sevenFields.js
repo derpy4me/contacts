@@ -2,10 +2,10 @@ const router = require("express").Router();
 
 const sevenFieldDal = require("../dal/sevenFields");
 const sevenFieldDto = require("../dto/sevenFields");
-const {validate} = require("../middleware/validate");
+const {validate} = require("../middleware/validate.js");
 const {v4} = require("uuid");
 const {param} = require("express-validator");
-const {isAuthenticated} = require('../middleware/authenticate');
+const {isAuthenticated} = require('../middleware/authenticate.js');
 
 router.get("/", isAuthenticated, async (req, res) => {
     try {
@@ -18,6 +18,7 @@ router.get("/", isAuthenticated, async (req, res) => {
 });
 
 router.get("/:id", isAuthenticated, [param('id', 'UUID required').isUUID()], validate, async (req, res) => {
+    console.log(`Get SevenField request received for ${req.params.id}`);
     try {
         const sevenField = await sevenFieldDal.getOne(req.params.id);
         if (sevenField === null) {

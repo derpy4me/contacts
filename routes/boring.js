@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const boringDal = require("../dal/boring");
 const boringDto = require("../dto/boring");
-const {validate} = require("../middleware/validate");
+const {validate} = require("../middleware/validate.js");
 const {v4} = require("uuid");
 const {param} = require("express-validator");
-const {isAuthenticated} = require("../middleware/authenticate");
+const {isAuthenticated} = require("../middleware/authenticate.js");
 
 
 router.get("/", isAuthenticated, async (req, res) => {
